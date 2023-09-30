@@ -1,0 +1,28 @@
+{
+  "name": "@markedjs/testutils",
+  "version": "0.0.0",
+  "description": "Test utilities for marked and marked extensions",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markedjs/testutils.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markedjs/testutils/issues"
+  },
+  "homepage": "https://github.com/markedjs/testutils#readme",
+  "dependencies": {
+    "@markedjs/html-differ": "^4.0.2",
+    "front-matter": "^4.0.2"
+  },
+  "devDependencies": {
+    "marked": "^9.0.3",
+    "marked-repo": "https://github.com/markedjs/marked/tarball/v9.0.3"
+  }
+}
