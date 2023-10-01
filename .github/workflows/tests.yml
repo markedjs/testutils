@@ -12,7 +12,6 @@ jobs:
   Test:
     strategy:
       matrix:
-        # lowest verison here should also be in `engines` field
         node_version: ["lts/*", "*"]
     runs-on: ubuntu-latest
     steps:
@@ -25,14 +24,8 @@ jobs:
           check-latest: true
       - name: Install Dependencies
         run: npm ci
-      - name: Run Unit Tests 👩🏽‍💻
-        run: npm run test:unit
-      - name: Run Spec Tests 👩🏽‍💻
-        run: npm run test:specs
-      - name: Run UMD Tests 👩🏽‍💻
-        run: npm run test:umd
-      - name: Run Types Tests 👩🏽‍💻
-        run: npm run test:types
+      - name: Test 👩🏽‍💻
+        run: npm run test
 
   Lint:
     runs-on: ubuntu-latest
@@ -59,7 +52,7 @@ jobs:
           node-version: "lts/*"
       - name: Install Dependencies
         run: npm ci
-      - name: Format ✨
+      - name: Format 💖
         run: npm run test:format
 
   # Release:
