@@ -1,5 +1,5 @@
 import { getTests } from "../src/index.js";
-import { resolvePath } from "./helpers.js";
+import { resolvePath } from "../src/helpers.js";
 import test from "node:test";
 import assert from "node:assert";
 

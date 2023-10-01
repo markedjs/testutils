@@ -1,4 +1,5 @@
 import { loadTests } from "./load-tests.js";
+import { resolvePath } from "./helpers.js";
 
 export async function getTests(dirs) {
   if (typeof dirs === "string") {
@@ -17,4 +18,16 @@ export async function getTests(dirs) {
   }
 
   return testsObj;
+}
+
+export async function getAllMarkedSpecTests() {
+  return await getTests({
+    CommonMark: resolvePath(
+      "../node_modules/marked-repo/test/specs/commonmark",
+    ),
+    GFM: resolvePath("../node_modules/marked-repo/test/specs/gfm"),
+    New: resolvePath("../node_modules/marked-repo/test/specs/new"),
+    Original: resolvePath("../node_modules/marked-repo/test/specs/original"),
+    RedDOS: resolvePath("../node_modules/marked-repo/test/specs/redos"),
+  });
 }

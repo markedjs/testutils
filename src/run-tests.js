@@ -1,12 +1,15 @@
 import { htmlIsEqual, firstDiff } from "./html-differ.js";
-import { getTests } from "./get-tests.js";
+import { getTests, getAllMarkedSpecTests } from "./get-tests.js";
 import nodeTest from "node:test";
 import assert from "node:assert";
+import { Marked } from "marked";
+import { outputCompletionTable } from "./output-table.js";
 
 export async function runTests({
   tests = {},
   defaultMarkedOptions = {},
-  parse = (md) => md,
+  parse = parseMarked,
+  addExtension = () => {},
   isEqual = htmlIsEqual,
   diff = firstDiff,
 } = {}) {
@@ -29,14 +32,18 @@ export async function runTests({
         }
 
         await t.test(
-          "should " + passFail + example,
+          `${section} should ${passFail}${example}`,
           {
             only: test.only,
             skip: test.skip,
           },
           async () => {
             const before = process.hrtime();
-            const parsed = await parse(test.markdown, options);
+            let parsed = parse(test.markdown, options, addExtension);
+            if (options.async) {
+              parsed = await parsed;
+            }
+            const elapsed = process.hrtime(before);
             const pass = await isEqual(parsed, test.html);
             if (test.shouldFail) {
               assert.ok(
@@ -53,8 +60,7 @@ export async function runTests({
               );
             }
 
-            const elapsed = process.hrtime(before);
-            if (elapsed[0] > 0) {
+            if (!options.async && elapsed[0] > 0) {
               const s = (elapsed[0] + elapsed[1] * 1e-9).toFixed(3);
               assert.fail(`took too long: ${s}s`);
             }
@@ -63,4 +69,55 @@ export async function runTests({
       }
     });
   }
+}
+
+export async function runAllMarkedSpecTests({
+  addExtension = () => {},
+  outputCompletionTables = true,
+} = {}) {
+  const specTests = await getAllMarkedSpecTests();
+
+  await Promise.all(
+    Object.keys(specTests).map((title) => {
+      const tests = specTests[title];
+      switch (title) {
+        case "CommonMark":
+          if (outputCompletionTables) {
+            outputCompletionTable(title, tests);
+          }
+          return runTests({
+            tests,
+            defaultMarkedOptions: { gfm: false, pedantic: false },
+            addExtension,
+          });
+        case "GFM":
+          if (outputCompletionTables) {
+            outputCompletionTable(title, tests);
+          }
+          return runTests({
+            tests,
+            defaultMarkedOptions: { gfm: true, pedantic: false },
+            addExtension,
+          });
+        case "New":
+          return runTests({ tests, addExtension });
+        case "Original":
+          return runTests({
+            tests,
+            defaultMarkedOptions: { gfm: false, pedantic: true },
+            addExtension,
+          });
+        case "RedDOS":
+          return runTests({ tests, addExtension });
+        default:
+          throw new Error("invalid title");
+      }
+    }),
+  );
+}
+
+function parseMarked(markedown, options, addExtension) {
+  const marked = new Marked(options);
+  addExtension(marked);
+  return marked.parse(markedown);
 }
