@@ -12,7 +12,7 @@ test("run-tests", async (t) => {
   await t.test("runTests", async () => {
     const tests = await getTests({
       CommonMark: resolvePath(
-        "../node_modules/marked-repo/test/specs/commonmark"
+        "../node_modules/marked-repo/test/specs/commonmark",
       ),
       GFM: resolvePath("../node_modules/marked-repo/test/specs/gfm"),
       New: resolvePath("../node_modules/marked-repo/test/specs/new"),
@@ -57,7 +57,7 @@ test("run-tests", async (t) => {
           default:
             throw new Error("invalid title");
         }
-      })
+      }),
     );
   });
 });

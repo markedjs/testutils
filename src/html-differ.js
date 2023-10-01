@@ -32,17 +32,17 @@ export async function firstDiff(actual, expected, padding) {
       firstIndex: null,
       actual: "",
       expected: "",
-    }
+    },
   );
 
   return {
     actual: result.actual.substring(
       result.firstIndex - padding,
-      result.firstIndex + padding
+      result.firstIndex + padding,
     ),
     expected: result.expected.substring(
       result.firstIndex - padding,
-      result.firstIndex + padding
+      result.firstIndex + padding,
     ),
   };
 }

@@ -14,19 +14,19 @@ export function outputCompletionTable(title, tests) {
   console.log(
     `| ${title
       .padStart(Math.ceil((spaces + title.length) / 2))
-      .padEnd(spaces)} |`
+      .padEnd(spaces)} |`,
   );
   console.log(`| ${" ".padEnd(spaces)} |`);
   for (const section in tests) {
     console.log(
       `| ${section.padEnd(longestName)} ${("" + tests[section].pass).padStart(
-        maxTestsLen
+        maxTestsLen,
       )} of ${("" + tests[section].total).padStart(maxTestsLen)} ${(
         (100 * tests[section].pass) /
         tests[section].total
       )
         .toFixed()
-        .padStart(4)}% |`
+        .padStart(4)}% |`,
     );
   }
   console.log("-".padEnd(spaces + 4, "-"));

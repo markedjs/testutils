@@ -5,7 +5,11 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "test:lint": "eslint .",
+    "test:format": "prettier . --check",
+    "lint": "eslint . --fix",
+    "format": "prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -24,6 +28,7 @@
   "devDependencies": {
     "eslint": "^8.50.0",
     "marked": "^9.0.3",
-    "marked-repo": "https://github.com/markedjs/marked/tarball/v9.0.3"
+    "marked-repo": "https://github.com/markedjs/marked/tarball/v9.0.3",
+    "prettier": "^3.0.3"
   }
 }

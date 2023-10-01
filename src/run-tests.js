@@ -41,7 +41,7 @@ export async function runTests({
             if (test.shouldFail) {
               assert.ok(
                 !pass,
-                `${test.markdown}\n------\n\nExpected: Should Fail`
+                `${test.markdown}\n------\n\nExpected: Should Fail`,
               );
             } else if (options.renderExact) {
               assert.strictEqual(test.html, parsed);
@@ -49,7 +49,7 @@ export async function runTests({
               const testDiff = await diff(parsed, test.html);
               assert(
                 pass,
-                `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`
+                `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
             }
 
@@ -58,7 +58,7 @@ export async function runTests({
               const s = (elapsed[0] + elapsed[1] * 1e-9).toFixed(3);
               assert.fail(`took too long: ${s}s`);
             }
-          }
+          },
         );
       }
     });

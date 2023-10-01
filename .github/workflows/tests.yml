@@ -1,0 +1,72 @@
+name: "Tests"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  Test:
+    strategy:
+      matrix:
+        # lowest verison here should also be in `engines` field
+        node_version: ["lts/*", "*"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
+          check-latest: true
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Unit Tests 👩🏽‍💻
+        run: npm run test:unit
+      - name: Run Spec Tests 👩🏽‍💻
+        run: npm run test:specs
+      - name: Run UMD Tests 👩🏽‍💻
+        run: npm run test:umd
+      - name: Run Types Tests 👩🏽‍💻
+        run: npm run test:types
+
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install Dependencies
+        run: npm ci
+      - name: Lint ✨
+        run: npm run test:lint
+
+  # Release:
+  #   permissions:
+  #     contents: write
+  #   needs: [Test, Lint]
+  #   if: |
+  #     github.ref == 'refs/heads/master' &&
+  #     github.event.repository.fork == false
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
+  #     - name: Install Node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - name: Install Dependencies
+  #       run: npm ci
+  #     - name: Release 🎉
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #       run: npx semantic-release
