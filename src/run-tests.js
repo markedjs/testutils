@@ -3,7 +3,7 @@ import { getTests } from "./get-tests.js";
 import nodeTest from "node:test";
 import assert from "node:assert";
 
-export function runTests({
+export async function runTests({
   tests = {},
   defaultMarkedOptions = {},
   parse = (md) => md,
@@ -15,42 +15,41 @@ export function runTests({
   }
 
   for (const section of Object.keys(tests)) {
-    nodeTest(section, (t) => {
+    await nodeTest(section, async (t) => {
       for (const test of tests[section].specs) {
-        const options = Object.assign(
-          {},
-          defaultMarkedOptions,
-          spec.options || {}
-        );
-        const example = spec.example ? " example " + spec.example : "";
-        const passFail = spec.shouldFail ? "fail" : "pass";
+        const options = {
+          ...defaultMarkedOptions,
+          ...(test.options || {}),
+        };
+        const example = test.example ? " example " + test.example : "";
+        const passFail = test.shouldFail ? "fail" : "pass";
 
         if (typeof options.silent === "undefined") {
           options.silent = true;
         }
 
-        t.test(
+        await t.test(
           "should " + passFail + example,
           {
-            only: spec.only,
-            skip: spec.skip,
+            only: test.only,
+            skip: test.skip,
           },
           async () => {
             const before = process.hrtime();
-            const parsed = parse(spec.markdown, spec.options);
-            const pass = isEqual(parsed, spec.html);
-            if (spec.shouldFail) {
+            const parsed = await parse(test.markdown, options);
+            const pass = await isEqual(parsed, test.html);
+            if (test.shouldFail) {
               assert.ok(
                 !pass,
-                `${spec.markdown}\n------\n\nExpected: Should Fail`
+                `${test.markdown}\n------\n\nExpected: Should Fail`
               );
-            } else if (spec.options.renderExact) {
-              assert.strictEqual(spec.html, parsed);
+            } else if (options.renderExact) {
+              assert.strictEqual(test.html, parsed);
             } else {
-              const specDiff = await diff(parsed, spec.html);
+              const testDiff = await diff(parsed, test.html);
               assert(
                 pass,
-                `Expected: ${specDiff.expected}\n  Actual: ${specDiff.actual}`
+                `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`
               );
             }
 

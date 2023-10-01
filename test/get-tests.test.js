@@ -1,15 +1,30 @@
 import { getTests } from "../src/index.js";
+import { resolvePath } from "./helpers.js";
 import test from "node:test";
 import assert from "node:assert";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+test("get-tests", async (t) => {
+  await t.test("getTests(string)", async () => {
+    const tests = await getTests(
+      resolvePath("../node_modules/marked-repo/test/specs/commonmark")
+    );
 
-test("getTests", async () => {
-  const tests = await getTests(
-    resolve(__dirname, "../node_modules/marked-repo/test/specs/commonmark")
-  );
+    assert.ok(tests.Tabs);
+  });
 
-  assert.ok(tests);
+  await t.test("getTests(array)", async () => {
+    const tests = await getTests([
+      resolvePath("../node_modules/marked-repo/test/specs/commonmark"),
+    ]);
+
+    assert.ok(tests[0].Tabs);
+  });
+
+  await t.test("getTests(obj)", async () => {
+    const tests = await getTests({
+      test: resolvePath("../node_modules/marked-repo/test/specs/commonmark"),
+    });
+
+    assert.ok(tests.test.Tabs);
+  });
 });

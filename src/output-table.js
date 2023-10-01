@@ -1,14 +1,14 @@
-export function outputCompletionTable(title, specs) {
+export function outputCompletionTable(title, tests) {
   let longestName = 0;
-  let maxSpecs = 0;
+  let maxTests = 0;
 
-  for (const section in specs) {
+  for (const section in tests) {
     longestName = Math.max(section.length, longestName);
-    maxSpecs = Math.max(specs[section].total, maxSpecs);
+    maxTests = Math.max(tests[section].total, maxTests);
   }
 
-  const maxSpecsLen = ("" + maxSpecs).length;
-  const spaces = maxSpecsLen * 2 + longestName + 11;
+  const maxTestsLen = ("" + maxTests).length;
+  const spaces = maxTestsLen * 2 + longestName + 11;
 
   console.log("-".padEnd(spaces + 4, "-"));
   console.log(
@@ -17,13 +17,13 @@ export function outputCompletionTable(title, specs) {
       .padEnd(spaces)} |`
   );
   console.log(`| ${" ".padEnd(spaces)} |`);
-  for (const section in specs) {
+  for (const section in tests) {
     console.log(
-      `| ${section.padEnd(longestName)} ${("" + specs[section].pass).padStart(
-        maxSpecsLen
-      )} of ${("" + specs[section].total).padStart(maxSpecsLen)} ${(
-        (100 * specs[section].pass) /
-        specs[section].total
+      `| ${section.padEnd(longestName)} ${("" + tests[section].pass).padStart(
+        maxTestsLen
+      )} of ${("" + tests[section].total).padStart(maxTestsLen)} ${(
+        (100 * tests[section].pass) /
+        tests[section].total
       )
         .toFixed()
         .padStart(4)}% |`
