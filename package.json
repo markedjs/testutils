@@ -1,6 +1,6 @@
 {
   "name": "@markedjs/testutils",
-  "version": "0.0.0",
+  "version": "9.0.3",
   "description": "Test utilities for marked and marked extensions",
   "main": "src/index.js",
   "type": "module",
