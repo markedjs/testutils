@@ -1,3 +1,8 @@
+/**
+ * Display a table in stdout that lists the sections and what percentage of the tests are not marked shouldFail
+ * @param {string} title The title to display above the table
+ * @param {Tests} tests The tests to display a table for
+ */
 export function outputCompletionTable(title, tests) {
   let longestName = 0;
   let maxTests = 0;

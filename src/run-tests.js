@@ -5,6 +5,17 @@ import assert from "node:assert";
 import { Marked } from "marked";
 import { outputCompletionTable } from "./output-table.js";
 
+/**
+ * Run spec tests
+ * @param {{
+ *   tests: Tests
+ *   defaultMarkedOptions: MarkedOptions,
+ *   parse: (marked: Marked, options: MarkedOptions, addExtension: (marked: Marked) => void) => string,
+ *   addExtension: (marked: Marked) => void,
+ *   isEqual: (actual: string, expected: string) => boolean,
+ *   diff: (actual: string, expected: string, padding: number) => {firstDiff: number, actual: string, expected: string},
+ * }} options
+ */
 export async function runTests({
   tests = {},
   defaultMarkedOptions = {},
@@ -71,6 +82,13 @@ export async function runTests({
   }
 }
 
+/**
+ * Run all marked specs with an added extension and optionally output completion table
+ * @param {{
+ *   addExtension: (marked: Marked) => void,
+ *   outputCompletionTable: boolean,
+ * }} options
+ */
 export async function runAllMarkedSpecTests({
   addExtension = () => {},
   outputCompletionTables = true,
