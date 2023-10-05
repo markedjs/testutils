@@ -1,6 +1,21 @@
 # @markedjs/testutils
 
-Test utilities for marked and marked extensions
+Test utilities for marked and marked extensions.
+
+## Versioning
+
+This is versioned as the version of marked that it includes tests for with the prerelease version being an integer that gets incremented when we release a new fix or feature without updating the marked version.
+
+We recommend to pin to a single version instead of using a range since any update may contain breaking changes.
+
+**Example**
+
+```json
+// package.json
+"dependencies": {
+  "@markedjs/testutils": "9.1.0-0"
+}
+```
 
 ## API
 
@@ -11,8 +26,8 @@ Get all marked [Tests](#tests)
 ### `getTests(dirs)`
 
 Get [Tests](#tests) from a directory or file.
-`dirs` can be a string, an array of strings, or an object with string values.
-The return type is the same as the input a Tests object, an array of Tests objects, or an object with Tests object values.
+`dirs` can be a string or an array of strings.
+The return type is the same as the input a Tests object or an array of Tests objects.
 
 ### `htmlIsEqual(actual, expected)`
 
