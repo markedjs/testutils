@@ -5,7 +5,26 @@ const htmlDiffer = new HtmlDiffer({
   ignoreComments: false,
 });
 
-export const htmlIsEqual = htmlDiffer.isEqual.bind(htmlDiffer);
+/**
+ * Check if html will display the same
+ * @param {string} actual The actual HTML
+ * @param {string} expected The expected HTML
+ * @returns {boolean} HTML is the same
+ */
+export function htmlIsEqual(actual, expected) {
+  return htmlDiffer.isEqual(actual, expected);
+}
+
+/**
+ * Get the first difference between actual and expected HTML
+ * @param {string} actual The actual HTML
+ * @param {string} expected The expected HTML
+ * @param {number} padding The number of characters to show around the first difference
+ * @returns {{
+ *   actual: string,
+ *   expected: string,
+ * }} An object with the characters around the index of the first difference in the expected and actual strings
+ */
 export async function firstDiff(actual, expected, padding) {
   padding = padding || 30;
   const diffHtml = await htmlDiffer.diffHtml(actual, expected);
