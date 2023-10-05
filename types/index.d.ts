@@ -1,4 +1,4 @@
-import type { MarkedOptions } from 'marked';
+import type { MarkedOptions } from "marked";
 
 export interface Spec {
   section?: string;
