@@ -19,12 +19,4 @@ test("get-tests", async (t) => {
 
     assert.ok(tests[0].Tabs);
   });
-
-  await t.test("getTests(obj)", async () => {
-    const tests = await getTests({
-      test: resolvePath("../node_modules/marked-repo/test/specs/commonmark"),
-    });
-
-    assert.ok(tests.test.Tabs);
-  });
 });

@@ -25,13 +25,19 @@ export async function getTests(dirs) {
  * }} All marked spec tests
  */
 export async function getAllMarkedSpecTests() {
-  return await getTests({
-    CommonMark: resolvePath(
-      "../node_modules/marked-repo/test/specs/commonmark",
-    ),
-    GFM: resolvePath("../node_modules/marked-repo/test/specs/gfm"),
-    New: resolvePath("../node_modules/marked-repo/test/specs/new"),
-    Original: resolvePath("../node_modules/marked-repo/test/specs/original"),
-    ReDOS: resolvePath("../node_modules/marked-repo/test/specs/redos"),
-  });
+  const tests = await getTests([
+    resolvePath("../node_modules/marked-repo/test/specs/commonmark"),
+    resolvePath("../node_modules/marked-repo/test/specs/gfm"),
+    resolvePath("../node_modules/marked-repo/test/specs/new"),
+    resolvePath("../node_modules/marked-repo/test/specs/original"),
+    resolvePath("../node_modules/marked-repo/test/specs/redos"),
+  ]);
+
+  return {
+    CommonMark: tests[0],
+    GFM: tests[1],
+    New: tests[2],
+    Original: tests[3],
+    ReDOS: tests[4],
+  };
 }
