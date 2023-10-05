@@ -54,7 +54,7 @@ export async function runTests({
               assert.strictEqual(test.html, parsed);
             } else {
               const testDiff = await diff(parsed, test.html);
-              assert(
+              assert.ok(
                 pass,
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
@@ -107,7 +107,7 @@ export async function runAllMarkedSpecTests({
             defaultMarkedOptions: { gfm: false, pedantic: true },
             addExtension,
           });
-        case "RedDOS":
+        case "ReDOS":
           return runTests({ tests, addExtension });
         default:
           throw new Error("invalid title");

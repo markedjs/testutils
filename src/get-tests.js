@@ -28,6 +28,6 @@ export async function getAllMarkedSpecTests() {
     GFM: resolvePath("../node_modules/marked-repo/test/specs/gfm"),
     New: resolvePath("../node_modules/marked-repo/test/specs/new"),
     Original: resolvePath("../node_modules/marked-repo/test/specs/original"),
-    RedDOS: resolvePath("../node_modules/marked-repo/test/specs/redos"),
+    ReDOS: resolvePath("../node_modules/marked-repo/test/specs/redos"),
   });
 }
