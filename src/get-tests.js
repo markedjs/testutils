@@ -1,5 +1,5 @@
 import { loadTests } from "./load-tests.js";
-import { resolvePath } from "./helpers.js";
+import { resolve } from "node:path";
 
 /**
  * Get tests from a directory or file
@@ -26,11 +26,11 @@ export async function getTests(dirs) {
  */
 export async function getAllMarkedSpecTests() {
   const tests = await getTests([
-    resolvePath("../node_modules/marked-repo/test/specs/commonmark"),
-    resolvePath("../node_modules/marked-repo/test/specs/gfm"),
-    resolvePath("../node_modules/marked-repo/test/specs/new"),
-    resolvePath("../node_modules/marked-repo/test/specs/original"),
-    resolvePath("../node_modules/marked-repo/test/specs/redos"),
+    resolve("./node_modules/marked-repo/test/specs/commonmark"),
+    resolve("./node_modules/marked-repo/test/specs/gfm"),
+    resolve("./node_modules/marked-repo/test/specs/new"),
+    resolve("./node_modules/marked-repo/test/specs/original"),
+    resolve("./node_modules/marked-repo/test/specs/redos"),
   ]);
 
   return {
