@@ -2,7 +2,7 @@ name: "Automerge"
 on:
   workflow_run:
     workflows:
-      - CI
+      - Tests
     types:
       - completed
 
