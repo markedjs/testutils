@@ -73,6 +73,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - name: Publish 📝
-        run: npm publish
+        run: |
+          PUBLISHED=$(npm info @markedjs/testutils version)
+          CURRENT=$(node -p "require('./package.json').version")
+          echo "$PUBLISHED -> $CURRENT"
+          if [ $PUBLISHED -ne $CURRENT ] then
+            npm publish
+          fi
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
