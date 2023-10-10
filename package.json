@@ -28,7 +28,7 @@
     "marked-repo": "https://github.com/markedjs/marked/tarball/v9.1.0"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
+    "eslint": "^8.51.0",
     "prettier": "^3.0.3"
   }
 }
