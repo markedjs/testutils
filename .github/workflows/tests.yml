@@ -77,8 +77,11 @@ jobs:
           PUBLISHED=$(npm info @markedjs/testutils version)
           CURRENT=$(node -p "require('./package.json').version")
           echo "$PUBLISHED -> $CURRENT"
-          if [ $PUBLISHED -ne $CURRENT ] then
+          if [ $PUBLISHED != $CURRENT ]
+          then
             npm publish
+          else
+            echo "No new version"
           fi
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
