@@ -23,7 +23,7 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.workflow_run.pull_requests[0].number,
             });
-            if (!pr.data.title.includes('marked')) {
+            if (pr.data.title.includes('marked')) {
               console.log('Not Merged 🚫');
               console.log(`Must update marked-repo as well`);
             } else if (pr.data.user.login !== 'dependabot[bot]') {
