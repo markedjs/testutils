@@ -29,7 +29,8 @@ export async function runTests({
   }
 
   for (const section of Object.keys(tests)) {
-    await nodeTest(section, async (t) => {
+    const hasOnly = tests[section].specs.some((test) => test.only);
+    await nodeTest(section, { only: hasOnly }, async (t) => {
       for (const test of tests[section].specs) {
         const options = {
           ...defaultMarkedOptions,
