@@ -1,6 +1,6 @@
 {
   "name": "@markedjs/testutils",
-  "version": "15.0.0-0",
+  "version": "15.0.7-0",
   "description": "Test utilities for marked and marked extensions",
   "main": "src/index.js",
   "type": "module",
@@ -24,8 +24,8 @@
   "dependencies": {
     "@markedjs/html-differ": "^5.0.1",
     "front-matter": "^4.0.2",
-    "marked": "^15.0.0",
-    "marked-repo": "https://github.com/markedjs/marked/tarball/v15.0.0"
+    "marked": "^15.0.7",
+    "marked-repo": "https://github.com/markedjs/marked/tarball/v15.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
