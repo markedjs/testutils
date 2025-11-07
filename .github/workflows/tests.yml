@@ -79,7 +79,7 @@ jobs:
           echo "$PUBLISHED -> $CURRENT"
           if [ $PUBLISHED != $CURRENT ]
           then
-            npm publish
+            npm publish --tag latest
           else
             echo "No new version"
           fi
