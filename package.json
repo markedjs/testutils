@@ -24,7 +24,7 @@
   "dependencies": {
     "@markedjs/html-differ": "^5.0.3",
     "front-matter": "^4.0.2",
-    "marked": "^17.0.0",
+    "marked": "^17.0.1",
     "marked-repo": "https://github.com/markedjs/marked/tarball/v17.0.0"
   },
   "devDependencies": {
