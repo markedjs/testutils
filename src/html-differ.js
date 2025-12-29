@@ -25,9 +25,9 @@ export function htmlIsEqual(actual, expected) {
  *   expected: string,
  * }} An object with the characters around the index of the first difference in the expected and actual strings
  */
-export async function firstDiff(actual, expected, padding) {
+export function firstDiff(actual, expected, padding) {
   padding = padding || 30;
-  const diffHtml = await htmlDiffer.diffHtml(actual, expected);
+  const diffHtml = htmlDiffer.diffHtml(actual, expected);
   const result = diffHtml.reduce(
     (obj, diff) => {
       if (diff.added) {

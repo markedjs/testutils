@@ -56,7 +56,7 @@ export async function runTests({
               parsed = await parsed;
             }
             const elapsed = process.hrtime(before);
-            const pass = await isEqual(parsed, test.html);
+            const pass = isEqual(parsed, test.html);
             if (test.shouldFail) {
               assert.ok(
                 !pass,
@@ -65,7 +65,7 @@ export async function runTests({
             } else if (options.renderExact) {
               assert.strictEqual(test.html, parsed);
             } else {
-              const testDiff = await diff(parsed, test.html);
+              const testDiff = diff(parsed, test.html);
               assert.ok(
                 pass,
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
