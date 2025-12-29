@@ -22,9 +22,9 @@ export async function loadTests(fileOrDir: string): Promise<Tests> {
     switch (ext) {
       case ".md": {
         const content = fm(fs.readFileSync(absFile, "utf8"));
-        const skip = content.attributes.skip;
+        const skip = content.attributes.skip as boolean;
         delete content.attributes.skip;
-        const only = content.attributes.only;
+        const only = content.attributes.only as boolean;
         delete content.attributes.only;
         specs.push({
           section: name,
@@ -44,8 +44,8 @@ export async function loadTests(fileOrDir: string): Promise<Tests> {
         try {
           // try require first
           json = await require(absFile);
-        } catch (err: any) {
-          if (err.code !== "ERR_REQUIRE_ESM") {
+        } catch (err: unknown) {
+          if (typeof err === "object" && err !== null && "code" in err && err.code !== "ERR_REQUIRE_ESM") {
             throw err;
           }
           // must import esm

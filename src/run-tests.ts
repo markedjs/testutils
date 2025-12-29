@@ -2,16 +2,16 @@ import { htmlIsEqual, firstDiff } from "./html-differ.js";
 import { getTests, getAllMarkedSpecTests } from "./get-tests.js";
 import nodeTest from "node:test";
 import assert from "node:assert";
-import { Marked, MarkedOptions } from "marked";
+import { Marked, MarkedExtension, MarkedOptions } from "marked";
 import { outputCompletionTable } from "./output-table.js";
 import { Tests, Spec } from "./types.js";
 
 interface RunTestsOptions {
   tests?: Tests | string;
-  defaultMarkedOptions?: MarkedOptions;
+  defaultMarkedOptions?: MarkedExtension;
   parse?: (
     markedown: string,
-    options: MarkedOptions,
+    options: MarkedExtension,
     addExtension: (marked: Marked) => void,
   ) => string | Promise<string>;
   addExtension?: (marked: Marked) => void;
@@ -21,8 +21,6 @@ interface RunTestsOptions {
     expected: string,
     padding?: number,
   ) => { actual: string; expected: string };
-  // allow extra props
-  [key: string]: any;
 }
 
 /**
@@ -37,7 +35,7 @@ export async function runTests({
   diff = firstDiff,
 }: RunTestsOptions = {}) {
   if (typeof tests === "string") {
-    tests = (await getTests(tests)) as Tests;
+    tests = await getTests(tests);
   }
 
   for (const section of Object.keys(tests)) {
@@ -64,12 +62,9 @@ export async function runTests({
           },
           async () => {
             const before = process.hrtime();
-            let parsed = parse(test.markdown, options, addExtension);
-            if (options.async) {
-              parsed = await parsed;
-            }
+            const parsed = await parse(test.markdown, options, addExtension);
             const elapsed = process.hrtime(before);
-            const pass = isEqual(parsed as string, test.html);
+            const pass = isEqual(parsed, test.html);
             if (test.shouldFail) {
               assert.ok(
                 !pass,
@@ -78,7 +73,7 @@ export async function runTests({
             } else if (options.renderExact) {
               assert.strictEqual(test.html, parsed);
             } else {
-              const testDiff = diff(parsed as string, test.html);
+              const testDiff = diff(parsed, test.html);
               assert.ok(
                 pass,
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
@@ -148,11 +143,11 @@ export async function runAllMarkedSpecTests({
 }
 
 function parseMarked(
-  markedown: string,
-  options: MarkedOptions,
+  markdown: string,
+  options: MarkedExtension,
   addExtension: (marked: Marked) => void,
-): string {
-  const marked = new Marked(options as any);
+) {
+  const marked = new Marked(options);
   addExtension(marked);
-  return marked.parse(markedown) as string;
+  return marked.parse(markdown);
 }

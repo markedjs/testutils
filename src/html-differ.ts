@@ -29,7 +29,7 @@ export function firstDiff(
 ): { actual: string; expected: string } {
   const diffHtml = htmlDiffer.diffHtml(actual, expected);
   const result = diffHtml.reduce(
-    (obj: any, diff: any) => {
+    (obj, diff) => {
       if (diff.added) {
         if (obj.firstIndex === null) {
           obj.firstIndex = obj.expected.length;
@@ -51,8 +51,15 @@ export function firstDiff(
       firstIndex: null,
       actual: "",
       expected: "",
-    },
+    } as { firstIndex: number | null; actual: string; expected: string },
   );
+
+  if (result.firstIndex === null) {
+    return {
+      actual: "",
+      expected: "",
+    };
+  }
 
   return {
     actual: result.actual.substring(

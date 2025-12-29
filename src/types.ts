@@ -1,14 +1,11 @@
-import { MarkedOptions } from "marked";
+import { MarkedExtension } from "marked";
 
 export interface Spec {
   section: string;
   markdown: string;
   html: string;
-  options?: MarkedOptions & {
-    silent?: boolean;
-    async?: boolean;
+  options?: MarkedExtension & {
     renderExact?: boolean;
-    [key: string]: any;
   };
   only?: boolean;
   skip?: boolean;

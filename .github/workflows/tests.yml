@@ -71,7 +71,7 @@ jobs:
 
   Release:
     # This will only work if the version in package.json is updated
-    needs: [Test, Lint, Format]
+    needs: [Test, Types, Lint, Format]
     if: |
       github.ref == 'refs/heads/main' &&
       github.event.repository.fork == false

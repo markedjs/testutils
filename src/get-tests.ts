@@ -7,6 +7,8 @@ import { Tests } from "./types.js";
  * @param dirs Can be a string or an array of strings
  * @returns The return type will match the input, a tests object or an array of tests objects
  */
+export async function getTests(dir: string[]): Promise<Tests[]>
+export async function getTests(dir: string): Promise<Tests>
 export async function getTests(
   dirs: string | string[],
 ): Promise<Tests | Tests[]> {
@@ -28,13 +30,13 @@ export async function getAllMarkedSpecTests(): Promise<{
   Original: Tests;
   ReDOS: Tests;
 }> {
-  const tests = (await getTests([
+  const tests = await getTests([
     resolve("./node_modules/marked-repo/test/specs/commonmark"),
     resolve("./node_modules/marked-repo/test/specs/gfm"),
     resolve("./node_modules/marked-repo/test/specs/new"),
     resolve("./node_modules/marked-repo/test/specs/original"),
     resolve("./node_modules/marked-repo/test/specs/redos"),
-  ])) as Tests[];
+  ]);
 
   return {
     CommonMark: tests[0],
