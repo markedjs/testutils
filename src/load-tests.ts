@@ -8,9 +8,7 @@ const require = createRequire(import.meta.url);
 
 export async function loadTests(fileOrDir: string): Promise<Tests> {
   const isFile = fs.statSync(fileOrDir).isFile();
-  const files = isFile
-    ? [path.basename(fileOrDir)]
-    : fs.readdirSync(fileOrDir);
+  const files = isFile ? [path.basename(fileOrDir)] : fs.readdirSync(fileOrDir);
   const dir = isFile ? path.dirname(fileOrDir) : fileOrDir;
 
   const obj: Tests = {};

@@ -8,7 +8,7 @@ import { Tests } from "./types.js";
  * @returns The return type will match the input, a tests object or an array of tests objects
  */
 export async function getTests(
-  dirs: string | string[]
+  dirs: string | string[],
 ): Promise<Tests | Tests[]> {
   if (Array.isArray(dirs)) {
     return await Promise.all(dirs.map((dir) => loadTests(dir)));

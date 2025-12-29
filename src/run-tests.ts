@@ -12,14 +12,14 @@ interface RunTestsOptions {
   parse?: (
     markedown: string,
     options: MarkedOptions,
-    addExtension: (marked: Marked) => void
+    addExtension: (marked: Marked) => void,
   ) => string | Promise<string>;
   addExtension?: (marked: Marked) => void;
   isEqual?: (actual: string, expected: string) => boolean;
   diff?: (
     actual: string,
     expected: string,
-    padding?: number
+    padding?: number,
   ) => { actual: string; expected: string };
   // allow extra props
   [key: string]: any;
@@ -73,7 +73,7 @@ export async function runTests({
             if (test.shouldFail) {
               assert.ok(
                 !pass,
-                `${test.markdown}\n------\n\nExpected: Should Fail`
+                `${test.markdown}\n------\n\nExpected: Should Fail`,
               );
             } else if (options.renderExact) {
               assert.strictEqual(test.html, parsed);
@@ -81,7 +81,7 @@ export async function runTests({
               const testDiff = diff(parsed as string, test.html);
               assert.ok(
                 pass,
-                `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`
+                `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
             }
 
@@ -89,7 +89,7 @@ export async function runTests({
               const s = (elapsed[0] + elapsed[1] * 1e-9).toFixed(3);
               assert.fail(`took too long: ${s}s`);
             }
-          }
+          },
         );
       }
     });
@@ -143,14 +143,14 @@ export async function runAllMarkedSpecTests({
         default:
           throw new Error("invalid title");
       }
-    })
+    }),
   );
 }
 
 function parseMarked(
   markedown: string,
   options: MarkedOptions,
-  addExtension: (marked: Marked) => void
+  addExtension: (marked: Marked) => void,
 ): string {
   const marked = new Marked(options as any);
   addExtension(marked);

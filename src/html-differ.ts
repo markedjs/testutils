@@ -25,7 +25,7 @@ export function htmlIsEqual(actual: string, expected: string): boolean {
 export function firstDiff(
   actual: string,
   expected: string,
-  padding: number = 30
+  padding: number = 30,
 ): { actual: string; expected: string } {
   const diffHtml = htmlDiffer.diffHtml(actual, expected);
   const result = diffHtml.reduce(
@@ -51,17 +51,17 @@ export function firstDiff(
       firstIndex: null,
       actual: "",
       expected: "",
-    }
+    },
   );
 
   return {
     actual: result.actual.substring(
       result.firstIndex - padding,
-      result.firstIndex + padding
+      result.firstIndex + padding,
     ),
     expected: result.expected.substring(
       result.firstIndex - padding,
-      result.firstIndex + padding
+      result.firstIndex + padding,
     ),
   };
 }

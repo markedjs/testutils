@@ -20,7 +20,7 @@ test("output-table", (t) => {
 
     assert.strictEqual(
       output,
-      "----------------------\n|        Title       |\n|                    |\n| Tests 1 of 1  100% |\n----------------------\n\n"
+      "----------------------\n|        Title       |\n|                    |\n| Tests 1 of 1  100% |\n----------------------\n\n",
     );
   });
 });
