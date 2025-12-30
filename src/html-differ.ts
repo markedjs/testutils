@@ -7,27 +7,27 @@ const htmlDiffer = new HtmlDiffer({
 
 /**
  * Check if html will display the same
- * @param {string} actual The actual HTML
- * @param {string} expected The expected HTML
- * @returns {boolean} HTML is the same
+ * @param actual The actual HTML
+ * @param expected The expected HTML
+ * @returns HTML is the same
  */
-export function htmlIsEqual(actual, expected) {
+export function htmlIsEqual(actual: string, expected: string): boolean {
   return htmlDiffer.isEqual(actual, expected);
 }
 
 /**
  * Get the first difference between actual and expected HTML
- * @param {string} actual The actual HTML
- * @param {string} expected The expected HTML
- * @param {number} padding The number of characters to show around the first difference
- * @returns {{
- *   actual: string,
- *   expected: string,
- * }} An object with the characters around the index of the first difference in the expected and actual strings
+ * @param actual The actual HTML
+ * @param expected The expected HTML
+ * @param padding The number of characters to show around the first difference
+ * @returns An object with the characters around the index of the first difference in the expected and actual strings
  */
-export async function firstDiff(actual, expected, padding) {
-  padding = padding || 30;
-  const diffHtml = await htmlDiffer.diffHtml(actual, expected);
+export function firstDiff(
+  actual: string,
+  expected: string,
+  padding: number = 30,
+): { actual: string; expected: string } {
+  const diffHtml = htmlDiffer.diffHtml(actual, expected);
   const result = diffHtml.reduce(
     (obj, diff) => {
       if (diff.added) {
@@ -51,8 +51,15 @@ export async function firstDiff(actual, expected, padding) {
       firstIndex: null,
       actual: "",
       expected: "",
-    },
+    } as { firstIndex: number | null; actual: string; expected: string },
   );
+
+  if (result.firstIndex === null) {
+    return {
+      actual: "",
+      expected: "",
+    };
+  }
 
   return {
     actual: result.actual.substring(

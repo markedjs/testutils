@@ -1,17 +1,19 @@
 import { outputCompletionTable } from "../src/index.js";
 import test from "node:test";
 import assert from "node:assert";
+import { Tests } from "../src/types.js";
 
 test("output-table", (t) => {
   t.test("outputCompletionTable", () => {
     let output = "";
-    t.mock.method(console, "log", (...args) => {
+    t.mock.method(console, "log", (...args: unknown[]) => {
       output += args.join(" ") + "\n";
     });
-    const tests = {
+    const tests: Tests = {
       Tests: {
         total: 1,
         pass: 1,
+        specs: [],
       },
     };
     outputCompletionTable("Title", tests);

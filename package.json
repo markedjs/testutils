@@ -1,16 +1,28 @@
 {
   "name": "@markedjs/testutils",
-  "version": "17.0.1-0",
+  "version": "17.0.1-1",
   "description": "Test utilities for marked and marked extensions",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
   "type": "module",
   "scripts": {
-    "test": "node --test",
+    "build": "tsc",
+    "test": "npm run build && node --import tsx --test test/*.test.ts",
     "test:lint": "eslint .",
     "test:format": "prettier . --check",
+    "test:types": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "eslint . --fix",
     "format": "prettier . --write"
   },
+  "files": [
+    "lib/"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/markedjs/testutils.git"
@@ -28,9 +40,13 @@
     "marked-repo": "https://github.com/markedjs/marked/tarball/v17.0.1"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^9.33.0",
+    "@types/node": "^22.10.2",
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "tsx": "^4.7.1",
+    "typescript": "^5.7.2"
   }
 }

@@ -2,28 +2,29 @@ import fs from "node:fs";
 import path from "node:path";
 import fm from "front-matter";
 import { createRequire } from "node:module";
+import { Tests, Spec } from "./types.js";
 
 const require = createRequire(import.meta.url);
 
-export async function loadTests(fileOrDir) {
+export async function loadTests(fileOrDir: string): Promise<Tests> {
   const isFile = fs.statSync(fileOrDir).isFile();
   const files = isFile ? [path.basename(fileOrDir)] : fs.readdirSync(fileOrDir);
   const dir = isFile ? path.dirname(fileOrDir) : fileOrDir;
 
-  const obj = {};
+  const obj: Tests = {};
 
   for (const file of files) {
     const ext = path.extname(file);
     const name = path.basename(file, ext);
     const absFile = path.join(dir, file);
-    let specs = [];
+    let specs: Spec[] = [];
 
     switch (ext) {
       case ".md": {
         const content = fm(fs.readFileSync(absFile, "utf8"));
-        const skip = content.attributes.skip;
+        const skip = content.attributes.skip as boolean;
         delete content.attributes.skip;
-        const only = content.attributes.only;
+        const only = content.attributes.only as boolean;
         delete content.attributes.only;
         specs.push({
           section: name,
@@ -43,8 +44,13 @@ export async function loadTests(fileOrDir) {
         try {
           // try require first
           json = await require(absFile);
-        } catch (err) {
-          if (err.code !== "ERR_REQUIRE_ESM") {
+        } catch (err: unknown) {
+          if (
+            typeof err === "object" &&
+            err !== null &&
+            "code" in err &&
+            err.code !== "ERR_REQUIRE_ESM"
+          ) {
             throw err;
           }
           // must import esm
@@ -72,7 +78,9 @@ export async function loadTests(fileOrDir) {
       }
 
       obj[spec.section].total++;
-      obj[spec.section].pass += spec.shouldFail ? 0 : 1;
+      if (!spec.shouldFail) {
+        obj[spec.section].pass++;
+      }
       obj[spec.section].specs.push(spec);
     }
   }

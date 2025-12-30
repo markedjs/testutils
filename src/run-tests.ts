@@ -2,19 +2,29 @@ import { htmlIsEqual, firstDiff } from "./html-differ.js";
 import { getTests, getAllMarkedSpecTests } from "./get-tests.js";
 import nodeTest from "node:test";
 import assert from "node:assert";
-import { Marked } from "marked";
+import { Marked, MarkedExtension } from "marked";
 import { outputCompletionTable } from "./output-table.js";
+import { Tests } from "./types.js";
+
+interface RunTestsOptions {
+  tests?: Tests | string;
+  defaultMarkedOptions?: MarkedExtension;
+  parse?: (
+    markedown: string,
+    options: MarkedExtension,
+    addExtension: (marked: Marked) => void,
+  ) => string | Promise<string>;
+  addExtension?: (marked: Marked) => void;
+  isEqual?: (actual: string, expected: string) => boolean;
+  diff?: (
+    actual: string,
+    expected: string,
+    padding?: number,
+  ) => { actual: string; expected: string };
+}
 
 /**
  * Run spec tests
- * @param {{
- *   tests: Tests
- *   defaultMarkedOptions: MarkedOptions,
- *   parse: (marked: Marked, options: MarkedOptions, addExtension: (marked: Marked) => void) => string,
- *   addExtension: (marked: Marked) => void,
- *   isEqual: (actual: string, expected: string) => boolean,
- *   diff: (actual: string, expected: string, padding: number) => {firstDiff: number, actual: string, expected: string},
- * }} options
  */
 export async function runTests({
   tests = {},
@@ -23,15 +33,16 @@ export async function runTests({
   addExtension = () => {},
   isEqual = htmlIsEqual,
   diff = firstDiff,
-} = {}) {
+}: RunTestsOptions = {}) {
   if (typeof tests === "string") {
-    tests = getTests(tests);
+    tests = await getTests(tests);
   }
 
   for (const section of Object.keys(tests)) {
-    const hasOnly = tests[section].specs.some((test) => test.only);
+    const sectionTests = tests[section];
+    const hasOnly = sectionTests.specs.some((test) => test.only);
     await nodeTest(section, { only: hasOnly }, async (t) => {
-      for (const test of tests[section].specs) {
+      for (const test of sectionTests.specs) {
         const options = {
           ...defaultMarkedOptions,
           ...(test.options || {}),
@@ -51,12 +62,9 @@ export async function runTests({
           },
           async () => {
             const before = process.hrtime();
-            let parsed = parse(test.markdown, options, addExtension);
-            if (options.async) {
-              parsed = await parsed;
-            }
+            const parsed = await parse(test.markdown, options, addExtension);
             const elapsed = process.hrtime(before);
-            const pass = await isEqual(parsed, test.html);
+            const pass = isEqual(parsed, test.html);
             if (test.shouldFail) {
               assert.ok(
                 !pass,
@@ -65,7 +73,7 @@ export async function runTests({
             } else if (options.renderExact) {
               assert.strictEqual(test.html, parsed);
             } else {
-              const testDiff = await diff(parsed, test.html);
+              const testDiff = diff(parsed, test.html);
               assert.ok(
                 pass,
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
@@ -85,20 +93,19 @@ export async function runTests({
 
 /**
  * Run all marked specs with an added extension and optionally output completion table
- * @param {{
- *   addExtension: (marked: Marked) => void,
- *   outputCompletionTable: boolean,
- * }} options
  */
 export async function runAllMarkedSpecTests({
   addExtension = () => {},
   outputCompletionTables = true,
+}: {
+  addExtension?: (marked: Marked) => void;
+  outputCompletionTables?: boolean;
 } = {}) {
   const specTests = await getAllMarkedSpecTests();
 
   await Promise.all(
     Object.keys(specTests).map((title) => {
-      const tests = specTests[title];
+      const tests = specTests[title as keyof typeof specTests];
       switch (title) {
         case "CommonMark":
           if (outputCompletionTables) {
@@ -135,8 +142,12 @@ export async function runAllMarkedSpecTests({
   );
 }
 
-function parseMarked(markedown, options, addExtension) {
+function parseMarked(
+  markdown: string,
+  options: MarkedExtension,
+  addExtension: (marked: Marked) => void,
+) {
   const marked = new Marked(options);
   addExtension(marked);
-  return marked.parse(markedown);
+  return marked.parse(markdown);
 }

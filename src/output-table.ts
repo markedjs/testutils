@@ -1,9 +1,11 @@
+import { Tests } from "./types.js";
+
 /**
  * Display a table in stdout that lists the sections and what percentage of the tests are not marked shouldFail
- * @param {string} title The title to display above the table
- * @param {Tests} tests The tests to display a table for
+ * @param title The title to display above the table
+ * @param tests The tests to display a table for
  */
-export function outputCompletionTable(title, tests) {
+export function outputCompletionTable(title: string, tests: Tests): void {
   let longestName = 0;
   let maxTests = 0;
 

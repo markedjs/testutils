@@ -27,6 +27,20 @@ jobs:
       - name: Test 👩🏽‍💻
         run: npm run test
 
+  Types:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "lts/*"
+      - name: Install Dependencies
+        run: npm ci
+      - name: Types 📚
+        run: npm run test:types
+
   Lint:
     runs-on: ubuntu-latest
     steps:
@@ -57,7 +71,7 @@ jobs:
 
   Release:
     # This will only work if the version in package.json is updated
-    needs: [Test, Lint, Format]
+    needs: [Test, Types, Lint, Format]
     if: |
       github.ref == 'refs/heads/main' &&
       github.event.repository.fork == false

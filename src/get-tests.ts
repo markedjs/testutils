@@ -1,12 +1,17 @@
 import { loadTests } from "./load-tests.js";
 import { resolve } from "node:path";
+import { Tests } from "./types.js";
 
 /**
  * Get tests from a directory or file
- * @param {string | string[]} dirs Can be a string or an array of strings
- * @returns {Tests | Tests[]} The return type will match the input, a tests object or an array of tests objects
+ * @param dirs Can be a string or an array of strings
+ * @returns The return type will match the input, a tests object or an array of tests objects
  */
-export async function getTests(dirs) {
+export async function getTests(dir: string[]): Promise<Tests[]>;
+export async function getTests(dir: string): Promise<Tests>;
+export async function getTests(
+  dirs: string | string[],
+): Promise<Tests | Tests[]> {
   if (Array.isArray(dirs)) {
     return await Promise.all(dirs.map((dir) => loadTests(dir)));
   }
@@ -16,15 +21,15 @@ export async function getTests(dirs) {
 
 /**
  * Get all marked tests
- * @returns {{
- *   CommonMark: Tests,
- *   GFM: Tests,
- *   New: Tests,
- *   Original: Tests,
- *   ReDOS: Tests,
- * }} All marked spec tests
+ * @returns All marked spec tests
  */
-export async function getAllMarkedSpecTests() {
+export async function getAllMarkedSpecTests(): Promise<{
+  CommonMark: Tests;
+  GFM: Tests;
+  New: Tests;
+  Original: Tests;
+  ReDOS: Tests;
+}> {
   const tests = await getTests([
     resolve("./node_modules/marked-repo/test/specs/commonmark"),
     resolve("./node_modules/marked-repo/test/specs/gfm"),
