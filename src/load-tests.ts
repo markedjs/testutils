@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import fm from "front-matter";
 import { createRequire } from "node:module";
-import { Tests, Spec, TestSection } from "./types.js";
+import { Tests, Spec } from "./types.js";
 
 const require = createRequire(import.meta.url);
 

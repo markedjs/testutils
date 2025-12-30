@@ -2,9 +2,9 @@ import { htmlIsEqual, firstDiff } from "./html-differ.js";
 import { getTests, getAllMarkedSpecTests } from "./get-tests.js";
 import nodeTest from "node:test";
 import assert from "node:assert";
-import { Marked, MarkedExtension, MarkedOptions } from "marked";
+import { Marked, MarkedExtension } from "marked";
 import { outputCompletionTable } from "./output-table.js";
-import { Tests, Spec } from "./types.js";
+import { Tests } from "./types.js";
 
 interface RunTestsOptions {
   tests?: Tests | string;
