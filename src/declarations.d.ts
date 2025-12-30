@@ -16,6 +16,9 @@ declare module "@markedjs/html-differ" {
       ignoreSelfClosingSlash?: boolean;
     });
     isEqual(actual: string, expected: string): boolean;
-    diffHtml(actual: string, expected: string): {value: string, added: boolean, removed: boolean}[];
+    diffHtml(
+      actual: string,
+      expected: string,
+    ): { value: string; added: boolean; removed: boolean }[];
   }
 }

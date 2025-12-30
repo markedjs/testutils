@@ -45,7 +45,12 @@ export async function loadTests(fileOrDir: string): Promise<Tests> {
           // try require first
           json = await require(absFile);
         } catch (err: unknown) {
-          if (typeof err === "object" && err !== null && "code" in err && err.code !== "ERR_REQUIRE_ESM") {
+          if (
+            typeof err === "object" &&
+            err !== null &&
+            "code" in err &&
+            err.code !== "ERR_REQUIRE_ESM"
+          ) {
             throw err;
           }
           // must import esm
