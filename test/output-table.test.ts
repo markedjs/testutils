@@ -6,7 +6,7 @@ import { Tests } from "../src/types.js";
 test("output-table", (t) => {
   t.test("outputCompletionTable", () => {
     let output = "";
-    t.mock.method(console, "log", (...args: any[]) => {
+    t.mock.method(console, "log", (...args: unknown[]) => {
       output += args.join(" ") + "\n";
     });
     const tests: Tests = {
