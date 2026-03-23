@@ -56,7 +56,7 @@ export async function loadTests(fileOrDir: string): Promise<Tests> {
           // must import esm
           json = await import(absFile);
         }
-        specs = specs.concat(json);
+        specs = specs.concat(json.default ?? json);
         break;
       }
       default:
