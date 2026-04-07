@@ -6,7 +6,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "lib",
-    "rootDir": "./",
+    "rootDir": "./src",
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
