@@ -1,6 +1,6 @@
 {
   "name": "@markedjs/testutils",
-  "version": "17.0.5-0",
+  "version": "18.0.0-0",
   "description": "Test utilities for marked and marked extensions",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -36,8 +36,8 @@
   "dependencies": {
     "@markedjs/html-differ": "^5.0.4",
     "front-matter": "^4.0.2",
-    "marked": "17.0.6",
-    "marked-repo": "https://github.com/markedjs/marked/tarball/v17.0.1"
+    "marked": "18.0.0",
+    "marked-repo": "https://github.com/markedjs/marked/tarball/v18.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
