@@ -43,7 +43,7 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@eslint/js": "^10.0.1",
     "@types/node": "^25.6.0",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "globals": "^17.5.0",
     "prettier": "^3.8.2",
     "tsx": "^4.21.0",
