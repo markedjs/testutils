@@ -37,7 +37,7 @@
     "@markedjs/html-differ": "^5.0.5",
     "front-matter": "^4.0.2",
     "marked": "18.0.4",
-    "marked-repo": "https://github.com/markedjs/marked/tarball/v18.0.0"
+    "marked-repo": "https://github.com/markedjs/marked/tarball/v18.0.4"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
