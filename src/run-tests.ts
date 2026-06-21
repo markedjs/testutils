@@ -64,18 +64,19 @@ export async function runTests({
             const before = process.hrtime();
             const parsed = await parse(test.markdown, options, addExtension);
             const elapsed = process.hrtime(before);
-            const pass = isEqual(parsed, test.html);
-            if (test.shouldFail) {
+            if (options.renderOk) {
+              // doesn't check the output against the html but just that it doesn't throw an error
+            } else if (options.renderExact) {
+              assert.strictEqual(test.html ?? '', parsed);
+            } else if (test.shouldFail) {
               assert.ok(
-                !pass,
+                !isEqual(parsed, test.html ?? ''),
                 `${test.markdown}\n------\n\nExpected: Should Fail`,
               );
-            } else if (options.renderExact) {
-              assert.strictEqual(test.html, parsed);
             } else {
-              const testDiff = diff(parsed, test.html);
+              const testDiff = diff(parsed, test.html ?? '');
               assert.ok(
-                pass,
+                isEqual(parsed, test.html ?? ''),
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
             }

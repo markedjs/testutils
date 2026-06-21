@@ -3,9 +3,10 @@ import { MarkedExtension } from "marked";
 export interface Spec {
   section: string;
   markdown: string;
-  html: string;
+  html?: string;
   options?: MarkedExtension & {
     renderExact?: boolean;
+    renderOk?: boolean;
   };
   only?: boolean;
   skip?: boolean;
