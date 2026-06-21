@@ -1,6 +1,6 @@
 {
   "name": "@markedjs/testutils",
-  "version": "18.0.5-1",
+  "version": "18.0.5-0",
   "description": "Test utilities for marked and marked extensions",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
