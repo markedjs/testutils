@@ -64,18 +64,22 @@ export async function runTests({
             const before = process.hrtime();
             const parsed = await parse(test.markdown, options, addExtension);
             const elapsed = process.hrtime(before);
-            const pass = isEqual(parsed, test.html);
-            if (test.shouldFail) {
+            if (options.renderOk) {
               assert.ok(
-                !pass,
-                `${test.markdown}\n------\n\nExpected: Should Fail`,
+                parsed,
+                `${test.markdown}\n------\n\nExpected: To Render Anything`,
               );
             } else if (options.renderExact) {
-              assert.strictEqual(test.html, parsed);
-            } else {
-              const testDiff = diff(parsed, test.html);
+              assert.strictEqual(test.html ?? "", parsed);
+            } else if (test.shouldFail) {
               assert.ok(
-                pass,
+                !isEqual(parsed, test.html ?? ""),
+                `${test.markdown}\n------\n\nExpected: Should Fail`,
+              );
+            } else {
+              const testDiff = diff(parsed, test.html ?? "");
+              assert.ok(
+                isEqual(parsed, test.html ?? ""),
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
             }
