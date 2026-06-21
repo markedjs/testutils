@@ -67,16 +67,16 @@ export async function runTests({
             if (options.renderOk) {
               // doesn't check the output against the html but just that it doesn't throw an error
             } else if (options.renderExact) {
-              assert.strictEqual(test.html ?? '', parsed);
+              assert.strictEqual(test.html ?? "", parsed);
             } else if (test.shouldFail) {
               assert.ok(
-                !isEqual(parsed, test.html ?? ''),
+                !isEqual(parsed, test.html ?? ""),
                 `${test.markdown}\n------\n\nExpected: Should Fail`,
               );
             } else {
-              const testDiff = diff(parsed, test.html ?? '');
+              const testDiff = diff(parsed, test.html ?? "");
               assert.ok(
-                isEqual(parsed, test.html ?? ''),
+                isEqual(parsed, test.html ?? ""),
                 `Expected: ${testDiff.expected}\n  Actual: ${testDiff.actual}`,
               );
             }
