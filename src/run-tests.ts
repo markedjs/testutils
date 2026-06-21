@@ -65,7 +65,10 @@ export async function runTests({
             const parsed = await parse(test.markdown, options, addExtension);
             const elapsed = process.hrtime(before);
             if (options.renderOk) {
-              // doesn't check the output against the html but just that it doesn't throw an error
+              assert.ok(
+                parsed,
+                `${test.markdown}\n------\n\nExpected: To Render Anything`,
+              );
             } else if (options.renderExact) {
               assert.strictEqual(test.html ?? "", parsed);
             } else if (test.shouldFail) {
