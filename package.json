@@ -40,7 +40,7 @@
     "marked-repo": "https://github.com/markedjs/marked/tarball/v18.0.5"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.3",
+    "@arethetypeswrong/cli": "^0.18.4",
     "@eslint/js": "^10.0.1",
     "@types/node": "26.0.1",
     "eslint": "^10.5.0",
